@@ -31,7 +31,38 @@ class ProductSeeder extends Seeder
             ['category_id' => 5, 'name' => 'WD Black SN850X 1TB NVMe', 'slug' => 'wd-black-sn850x-1tb', 'price' => 1800000, 'stock' => 50],
         ];
 
-        foreach ($products as $product) {
+        foreach ($products as &$product) {
+            // Create a dummy image using PHP GD
+            $width = 600;
+            $height = 400;
+            $image = imagecreatetruecolor($width, $height);
+
+            // Random vibrant background color
+            $bgColor = imagecolorallocate($image, rand(50, 200), rand(50, 200), rand(50, 200));
+            $textColor = imagecolorallocate($image, 255, 255, 255);
+
+            imagefill($image, 0, 0, $bgColor);
+
+            // Add text (simple centered approximation)
+            $text = $product['name'];
+            $fontWidth = imagefontwidth(5);
+            $fontHeight = imagefontheight(5);
+            $textWidth = $fontWidth * strlen($text);
+            $x = ($width - $textWidth) / 2;
+            $y = ($height - $fontHeight) / 2;
+
+            imagestring($image, 5, $x, $y, $text, $textColor);
+
+            ob_start();
+            imagejpeg($image, null, 90);
+            $imageContent = ob_get_clean();
+            imagedestroy($image);
+
+            $fileName = 'products/seed_' . $product['slug'] . '.jpg';
+            \Illuminate\Support\Facades\Storage::disk('public')->put($fileName, $imageContent);
+
+            $product['image_path'] = $fileName;
+
             \App\Models\Product::create($product);
         }
     }

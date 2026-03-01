@@ -28,8 +28,6 @@ Route::get('/checkout', Checkout::class)
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::view('dashboard', 'dashboard')->name('dashboard');
-
     Route::middleware('can:admin')
         ->prefix('admin')
         ->name('admin.')
