@@ -18,6 +18,10 @@ use App\Livewire\Admin\Product\Form as ProductForm;
 use App\Livewire\Admin\Order\Index as OrderIndex;
 use App\Livewire\Admin\Order\Show as OrderShow;
 
+// User Orders
+use App\Livewire\Store\Order\Index as UserOrderIndex;
+use App\Livewire\Store\Order\Show as UserOrderShow;
+
 Route::get('/', HomePage::class)->name('home');
 Route::get('/products', Catalog::class)->name('catalog');
 Route::get('/products/{slug}', ProductShow::class)->name('products.show');
@@ -27,6 +31,9 @@ Route::get('/checkout', Checkout::class)
     ->name('checkout');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/orders', UserOrderIndex::class)->name('orders.index');
+    Route::get('/orders/{order}', UserOrderShow::class)->name('orders.show');
 
     Route::middleware('can:admin')
         ->prefix('admin')

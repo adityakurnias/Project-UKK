@@ -23,6 +23,10 @@
                 wire:navigate>Home</flux:navlist.item>
             <flux:navlist.item icon="shopping-bag" href="{{ route('catalog') }}"
                 :current="request()->routeIs('catalog')" wire:navigate>Products</flux:navlist.item>
+            @auth
+            <flux:navlist.item icon="clipboard-document-list" href="{{ route('orders.index') }}"
+                :current="request()->routeIs('orders.*')" wire:navigate>Pesanan</flux:navlist.item>
+            @endauth
         </flux:navlist>
 
         <flux:spacer />
@@ -84,6 +88,11 @@
             <flux:navbar.item icon="shopping-bag" href="{{ route('catalog') }}" :current="request()->routeIs('catalog')"
                 class="px-4 py-2 rounded-full transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800" wire:navigate>
                 Products</flux:navbar.item>
+            @auth
+            <flux:navbar.item icon="clipboard-document-list" href="{{ route('orders.index') }}" :current="request()->routeIs('orders.*')"
+                class="px-4 py-2 rounded-full transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800" wire:navigate>
+                Pesanan</flux:navbar.item>
+            @endauth
         </flux:navbar>
 
         <flux:spacer />
